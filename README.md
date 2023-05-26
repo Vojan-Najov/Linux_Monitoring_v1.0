@@ -8,5 +8,5 @@ Linux basic bash scripting and system research.
 
 ## Tasks
 
-1 [Part 1. First effort](./01/main.sh)
+1 [First effort](./01/main.sh)
 
