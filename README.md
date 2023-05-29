@@ -10,3 +10,7 @@ Linux basic bash scripting and system research.
 
 - [Part 1. First effort](./01/main.sh)
 
+## Materials
+
+- [Part 0. Begining](./materials/part01_begining.md)
+
