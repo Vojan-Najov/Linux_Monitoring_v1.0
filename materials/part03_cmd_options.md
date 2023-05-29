@@ -44,7 +44,7 @@ echo The last parameter was ${!#}
 
 ### Capture all command line parameters
 
-In some cases, you may need to capture all parameters passed to the script. The $* and $@ variables can be used for that.
+In some cases, you may need to capture all parameters passed to the script. The `$*` and `$@` variables can be used for that.
 
 The $* variable contains all parameters entered via command line as a single item.
 
