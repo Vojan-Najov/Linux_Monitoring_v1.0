@@ -70,7 +70,7 @@ echo "The value is $result"
 
 Function arguments in bash work in the same way as the command line parameters passed to the script.
 
-For example, the function name is stored in the $0 parameter, the first argument passed to it in $1, and so on. The number of arguments passed to the function is stored in the $# variable.
+For example, the function name is stored in the `$0` parameter, the first argument passed to it in `$1`, and so on. The number of arguments passed to the function is stored in the `$#` variable.
 
 An example of using function arguments:
 ```shell
