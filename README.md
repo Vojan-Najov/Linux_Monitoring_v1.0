@@ -16,4 +16,5 @@ Linux basic bash scripting and system research.
 - [Bash scripts: loops](./materials/part02_cycles.md)
 - [Bash scripts: parameters and command line keys](./materials/part03_cmd_options.md)
 - [Bash scripts: input and output](./materials/part04_input_output.md)
+- [Bash scripts: functions and creating libraries](./materials/part05_libraries.md)
 
