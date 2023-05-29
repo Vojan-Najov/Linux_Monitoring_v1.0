@@ -12,5 +12,5 @@ Linux basic bash scripting and system research.
 
 ## Materials
 
-- [Part 0. Begining](./materials/part01_begining.md)
+- [Bsh scripts: begining](./materials/part01_begining.md)
 
