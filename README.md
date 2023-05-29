@@ -13,4 +13,5 @@ Linux basic bash scripting and system research.
 ## Materials
 
 - [Bash scripts: begining](./materials/part01_begining.md)
+- [Bash scripts: loops](./materials/part02_cycles.md)
 
