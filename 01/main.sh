@@ -1,17 +1,21 @@
 #!/bin/bash
 
+DIR_NAME=$(dirname $0)
 ARG_ERR="Error: the parameter is a number."
-NOARG_ERR="Error: one parameter is expected."
+ARG_NUMBER_ERR="Error: one parameter is expected."
 
-if [[ $# -eq 1 ]]
+. $DIR_NAME/isnumber.sh
+
+if [ $# -eq 1 ]
 then
-  if [[ "$1" =~ ^[-+]?[0-9]+.?[0-9]*[eE]?[-+]?[0-9].$ ]]
+  isnumber $1
+  if [ $? -eq 1 ]
   then
-    echo "$ARG_ERR"
-  else
     echo "$1"
+  else
+    echo "$ARG_ERR"
   fi
 else
-  echo "$NOARG_ERR"
+  echo "$ARG_NUMBER_ERR"
 fi
 
