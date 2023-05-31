@@ -120,14 +120,14 @@ function color() {
   if [ "$background" == "" ]; then background="default"; fi
 
   case "$foreground" in
-    "default") color='\033[0;39m';;
-    "white")   color='\033[0;37m';;
-    "red")     color='\033[0;31m';;
-    "green")   color='\033[0;32m';;
-    "blue")    color='\033[0;34m';;
-    "purple")  color='\033[0;35m';;
-    "black")   color='\033[0;30m';;
-    *)         color='\033[0;39m';;
+    "default") color='\033[1;39m';;
+    "white")   color='\033[1;37m';;
+    "red")     color='\033[1;31m';;
+    "green")   color='\033[1;32m';;
+    "blue")    color='\033[1;34m';;
+    "purple")  color='\033[1;35m';;
+    "black")   color='\033[1;30m';;
+    *)         color='\033[1;39m';;
   esac
 
   case "$background" in
