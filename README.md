@@ -9,6 +9,8 @@ Linux basic bash scripting and system research.
 ## Tasks
 
 - [Part 1. First effort](./01)
+- [Part 2. System research](./02)
+- [Part 3. Visual output design for the system research script](./03)
 
 ## Materials
 
