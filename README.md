@@ -12,6 +12,7 @@ Linux basic bash scripting and system research.
 - [Part 2. System research](./02)
 - [Part 3. Visual output design for the system research script](./03)
 - [Part 4. Configuring visual output design for the system research script](./04)
+- [Part 5. File system research](./05)
 
 ## Materials
 
