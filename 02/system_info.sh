@@ -64,6 +64,11 @@ function get_ip() {
   echo "$IP"
 }
 
+#function get_netmask() {
+#  local NETMASK=$(ipcalc $IP | awk '/Netmask/{print$2}')
+#  echo "$NETMASK"
+#}
+
 function get_netmask() {
   local IP
   local IP_ARRAY
@@ -88,9 +93,6 @@ function get_netmask() {
   then
     echo ${masks[$MASK]}
   fi
-
-  #local NETMASK=$(ipcalc $IP | awk '/Netmask/{print$2}')
-  #echo "$NETMASK"
 }
 
 function get_gateway() {
