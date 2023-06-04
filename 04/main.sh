@@ -10,10 +10,8 @@ ARG_EQUAL_ERR="Error: monitoring.conf: `
 CONFIG_ERR="Error: incorrect config file."
 DIR_PATH="$(dirname $0)"
 CONFIG_FILE="$DIR_PATH/monitoring.conf"
-
 COLORS=( 6 1 6 1 )
 DEFAULT_SETTINGS=1
-
 
 . $DIR_PATH/isnumber.sh
 . $DIR_PATH/system_info.sh
