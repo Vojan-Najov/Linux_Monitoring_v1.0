@@ -1,11 +1,11 @@
 #!/bin/bash
 
-DIR_PATH=$(dirname $0)
+DIR_PATH="$(dirname $0)"
 
 ARG_ERR="Error: the parameter is a number."
 ARG_NUMBER_ERR="Error: one parameter is expected."
 
-. $DIR_PATH/isnumber.sh
+. "$DIR_PATH"/isnumber.sh
 
 if [ $# -ne 1 ]; then echo "$ARG_NUMBER_ERR"; exit 1; fi
 
