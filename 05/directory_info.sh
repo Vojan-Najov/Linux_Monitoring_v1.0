@@ -1,115 +1,113 @@
 
 function count_subdirectories() {
-	local DIRECTOTY="$1"
+	local directory="$1"
 
-	if [ -z "$DIRECTORY" ]; then DIRECTORY="./"; fi
+	if [ -z "$directory" ]; then directory="./"; fi
 
-	echo "$(ls -lR 2>/dev/null "$DIRECTORY" | grep "^d" | wc -l)"
+	echo "$(ls -lR "$directory" 2>/dev/null | grep ^d | wc -l)"
 }
 
 function get_largest_subdirectories() {
-	local DIRECTOTY="$1"
-	local array
-	local i=0
+  local directory="$1"
+  local subdirs
+  local i; local k
 
-	if [ -z "$DIRECTORY" ]; then DIRECTORY="./"; fi
+  if [ -z "$directory" ]; then directory="./"; fi
+ 
+  i=0 
+  for d in "${directory}"*/
+  do
+    subdirs[$i]=$(du -s --block-size=1 "$d" 2>/dev/null)
+    i=$(( $i + 1 ))
+  done
 
-	for d in ${DIRECTORY}*/
-	do
-		array[$i]=$(du -sb "$d" 2>/dev/null)
-		i=$(( $i + 1 ))
-	done
+  IFS=$'\n' read -d '' -ra subdirs < <(printf '%s\n' "${subdirs[@]}" | sort -k1,1n)
 
-	IFS=$'\n' read -d '' -ra s < <(printf '%s\n' "${array[@]}" | sort -k1,1n)
-
-	k=1
-	for (( i=((${#s[@]} - 1)); i >= 0; --i ))
-	do
-		echo $i >tmp
-		if [ -z "${s[$i]}" ]; then break; fi
-		printf "%s - %s, %s\n" \
-               "$k" \
-               "$(echo ${s[$i]} | awk '{print $2}')" \
-               "$(byte_converter $(echo ${s[$i]} | awk '{print $1}'))"
-		k=$(( $k + 1 ))
-		if [ $k -gt 5 ]; then break; fi
-	done
+  k=1
+  for (( i=((${#subdirs[@]} - 1)); i >= 0; --i ))
+  do
+    if [ -z "${subdirs[$i]}" ]; then break; fi
+    printf "%s - %s, %s\n" \
+           "$k" \
+           "$(echo ${subdirs[$i]} | awk '{print $2}')" \
+           "$(byte_converter $(echo ${subdirs[$i]} | awk '{print $1}'))"
+    k=$(( $k + 1 ))
+    if [ $k -gt 5 ]; then break; fi
+  done
 }
 
 function count_config_files() {
-	local count=0
+  local count=0
+  local filename
 
-	while [ -n "$1" ]
-	do
-		if [[ "$1" =~ \.conf$ ]]
-		then
-			count=$(( $count + 1 ))
-		fi
-		shift
-	done
+  while [ -n "$1" ]
+  do
+    filename=$(basename "$1")
+    if [[ "$filename" =~ ^[[:print:]]+\.conf$ ]]; then
+      count=$(( $count + 1 ))
+    fi
+    shift
+  done
 
-	echo "$count"
+  echo "$count"
 }
 
-
 function count_text_files() {
-	local count=0
+  local count=0
 
-	while [ -n "$1" ]
-	do
-		if [[ "$(file --mime-type $1)" =~ text ]]
-		then
-			count=$(( $count + 1 ))
-		fi
-		shift
-	done
+  while [ -n "$1" ]
+  do
+    if [[ "$(file --mime-type $1 | awk -F ':' '{print $2}' )" =~ text ]]; then
+      count=$(( $count + 1 ))
+    fi
+    shift
+  done
 
-	echo "$count"
+  echo "$count"
 }
 
 function count_executable_file() {
-	local count=0
+  local count=0
 
-	while [ -n "$1" ]
-	do
-		if [ -x "$1" ]
-		then
-			count=$(( $count + 1 ))
-		fi
-		shift
-	done
+  while [ -n "$1" ]
+  do
+    if [ -x "$1" ]; then
+      count=$(( $count + 1 ))
+    fi
+    shift
+  done
 
-	echo "$count"
+  echo "$count"
 }
 
 function count_log_files() {
-	local count=0
+  local count=0
+  local filename
 
-	while [ -n "$1" ]
-	do
-		if [[ "$1" =~ \.log$ ]]
-		then
-			count=$(( $count + 1 ))
-		fi
-		shift
-	done
+  while [ -n "$1" ]
+  do
+    filename=$(basename "$1")
+    if [[ "$filename" =~ ^[[:print:]]+\.log$ ]]; then
+      count=$(( $count + 1 ))
+    fi
+    shift
+  done
 
-	echo "$count"
+  echo "$count"
 }
 
 function count_archive_files() {
-	local count=0
+  local count=0
 
-	while [ -n "$1" ]
-	do
-		if [[ "$(file $1)" =~ (archive|compressed) ]]
-		then
-			count=$(( $count + 1 ))
-		fi
-		shift
-	done
+  while [ -n "$1" ]
+  do
+    if [[ "$(file $1 | awk -F ':' '{print$2}')" =~ (archive|compressed) ]]; then
+      count=$(( $count + 1 ))
+    fi
+    shift
+  done
 
-	echo "$count"
+  echo "$count"
 }
 
 function get_10_largest_files() {
