@@ -111,69 +111,71 @@ function count_archive_files() {
 }
 
 function get_10_largest_files() {
-	local files
-	local i
+  local files
+  local filename; local filesize; local filetype
+  local arr
+  local i; local k
 
-	i=0
-	while [ -n "$1" ]
-	do
-		filename="$1"
-		filesize="$(du --block-size=1 $1 | awk '{print $1}')"
-		IFS=$'.' read -ra arr <<<"$(basename $filename)"
-		if [ ${#arr[@]} -gt 1 ]
-		then
-			filetype="${arr[${#arr[@]} - 1]}"
-		else
-			filetype="$(file --mime-type $filename | awk -F ':' '{print $2}')"
-		fi
-		files[$i]="$filename $filesize $filetype"
-		i=$(( $i + 1 ))
-		shift
-	done
+  i=0
+  while [ -n "$1" ]
+  do
+    filename="$1"
+    filesize="$(du --block-size=1 $filename | awk '{print $1}')"
+    IFS=$'.' read -ra arr <<<"$(basename $filename)"
+    if [ ${#arr[@]} -gt 1 ]; then
+      filetype="${arr[${#arr[@]} - 1]}"
+    else
+      filetype="$(file --mime-type $filename | awk -F ':' '{print $2}')"
+    fi
+    files[$i]="${filesize}:${filename}:${filetype}"
+    i=$(( $i + 1 ))
+    shift
+  done
 
-	IFS=$'\n' read -d '' -ra s < <(printf '%s\n' "${files[@]}" | sort -k2,2n)
+  IFS=$'\n' read -d '' -ra files < <(printf '%s\n' "${files[@]}" | sort -t ':' -k1,1n)
 
-	k=1
-	for (( i=((${#s[@]} - 1)); i >= 0; --i ))
-	do
-		printf "%s - %s, %s, %s \n" \
-               "$k" \
-               "$(echo ${s[$i]} | awk '{print $1}')" \
-               "$(byte_converter $(echo ${s[$i]} | awk '{print $2}'))" \
-               "$(echo ${s[$i]} | awk '{print $3}')"
-        k=$(( $k + 1 ))
-		if [ $k -gt 10 ]; then break; fi
-	done
+  k=1
+  for (( i=((${#files[@]} - 1)); i >= 0; --i ))
+  do
+    printf "%s - %s, %s, %s \n" \
+           "$k" \
+           "$(echo ${files[$i]} | awk -F ':' '{print $2}')" \
+           "$(byte_converter $(echo ${files[$i]} | awk -F ':' '{print $1}'))" \
+           "$(echo ${files[$i]} | awk -F ':' '{print $3}')"
+    k=$(( $k + 1 ))
+    if [ $k -gt 10 ]; then break; fi
+  done
 }
 
 function get_10_largest_executable_files() {
-	local files
-	local i
+  local files
+  local filename; local filesize; local filehash
+  local i; local k
 
-	i=0
-	while [ -n "$1" ]
-	do
-		filename="$1"
-		if [ ! -x "$filename" ]; then shift; continue; fi
-		filesize="$(du --block-size=1 $1 | awk '{print $1}')"
-		filehash="$(md5sum $filename | awk '{print $1}')"
-		files[$i]="$filename $filesize $filehash"
-		i=$(( $i + 1 ))
-		shift
-	done
+  i=0
+  while [ -n "$1" ]
+  do
+    filename="$1"
+    if [ ! -x "$filename" ]; then shift; continue; fi
+    filesize="$(du --block-size=1 $1 | awk '{print $1}')"
+    filehash="$(md5sum $filename | awk '{print $1}')"
+    files[$i]="${filesize}:${filename}:${filehash}"
+    i=$(( $i + 1 ))
+    shift
+  done
 
-	IFS=$'\n' read -d '' -ra s < <(printf '%s\n' "${files[@]}" | sort -k2,2n)
+  IFS=$'\n' read -d '' -ra files < <(printf '%s\n' "${files[@]}" | sort -t ':' -k1,1n)
 
-	k=1
-	for (( i=((${#s[@]} - 1)); i >= 0; --i ))
-	do
-		printf "%s - %s, %s, %s \n" \
-               "$k" \
-               "$(echo ${s[$i]} | awk '{print $1}')" \
-               "$(byte_converter $(echo ${s[$i]} | awk '{print $2}'))" \
-               "$(echo ${s[$i]} | awk '{print $3}')"
-        k=$(( $k + 1 ))
-		if [ $k -gt 10 ]; then break; fi
-	done
+  k=1
+  for (( i=((${#files[@]} - 1)); i >= 0; --i ))
+  do
+    printf "%s - %s, %s, %s \n" \
+           "$k" \
+           "$(echo ${files[$i]} | awk -F ':' '{print $2}')" \
+           "$(byte_converter $(echo ${files[$i]} | awk -F ':' '{print $1}'))" \
+           "$(echo ${files[$i]} | awk -F ':' '{print $3}')"
+    k=$(( $k + 1 ))
+    if [ $k -gt 10 ]; then break; fi
+  done
 }
 
